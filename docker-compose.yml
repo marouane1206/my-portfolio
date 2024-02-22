@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  frontend:
+    container_name: my-portfolio-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+
+  server:
+    container_name: my-portfolio-server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "3001:3001"
+    depends_on:
+      - frontend
+    env_file:
+      - .env
+
+networks:
+  app-tier:
+    driver: bridge
